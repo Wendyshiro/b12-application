@@ -1,25 +1,27 @@
 name: B12 Application Submission
 
-on: 
-    workflow_dispatch: #Manual trigger - runs once to submit
+on:
+  workflow_dispatch:
 
 jobs:
-    apply:
-        runs-on: ubuntu-latest
+  apply:
+    runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
-        steps:
-            - name: Checkout repository
-              uses: actions/checkout@v4
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-            - name: Set up Python
-              uses: actions/setup-python@v5
-              with: 
-                python-version: "3.11"
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
 
-            - name: Install dependencies
-              run: Pip install requests
+      - name: Install dependencies
+        run: pip install requests
 
-            - name: Submit B12 application
-              env:
-                ACTION_RUN_LINK: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-              run: python apply.py
+      - name: Submit B12 application
+        env:
+          ACTION_RUN_LINK: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: python apply.py
